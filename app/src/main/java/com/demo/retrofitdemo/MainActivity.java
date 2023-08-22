@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
@@ -26,15 +27,18 @@ RecyclerView recycler;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recycler =findViewById(R.id.recycler);
+        recycler = findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
+        
+        showtoast();
+        
 
         RetrofitInstance.getInstance().apiInterface.getUsers().enqueue(new Callback<List<UserModel>>() {
             @Override
             public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
 
                 allUsersList =response.body();
-recycler.setAdapter(new MyAdapter(MainActivity.this,allUsersList));
+                recycler.setAdapter(new MyAdapter(MainActivity.this,allUsersList));
                 Log.e("api","onResponse:"+response.body().toString());
 
             }
@@ -46,5 +50,9 @@ recycler.setAdapter(new MyAdapter(MainActivity.this,allUsersList));
             }
         });
 
+    }
+
+    private void showtoast() {
+        Toast.makeText(this, "This is Toast", Toast.LENGTH_SHORT).show();
     }
 }
